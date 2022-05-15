@@ -1,3 +1,6 @@
+## 前置条件
+请安装(Haxe环境)[http://haxe.org]。
+
 ## 已知问题
 1、转换的工程暂未支持特效碰撞块自动识别。  
     原来的碰撞逻辑是使用像素级别碰撞，因此没有碰撞块，目前暂通过手动设置完成。
@@ -10,6 +13,18 @@
 4、isFollow跟随角色的属性会失效。
 
 5、卡帧、伤害等数据未完成同步，后续可能可以采取比例法，来还原伤害。
+
+## ActBuilderAtlasDataParser
+用于将data数据精灵图转换成常用的精灵图数据
+```shell
+neko actbuilder_atlas_parser.n '人物解码目录' '输出目录'
+```
+
+## ActBuilderDataParser
+用于解码幻想纹章2系列的data加密数据，使用方法：
+```shell
+neko actbuilder_parser.n '人物数据.data' '输出目录'
+```
 
 ## ActBuilderDataEncode
 用于生成幻想纹章2系列的data加密数据，使用方法：
