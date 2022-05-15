@@ -1,0 +1,3 @@
+--main ActBuilderDataParser
+--neko bin/actbuilder_parser.n
+--library openfl

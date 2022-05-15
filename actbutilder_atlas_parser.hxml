@@ -1,0 +1,3 @@
+--main ActBuilderAtlasDataParser
+--neko bin/actbuilder_atlas_parser.n
+--library openfl

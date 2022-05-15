@@ -1,0 +1,3 @@
+--main ActBuilderDataEncode
+--library openfl
+--neko bin/act_builder_data_encode.n
