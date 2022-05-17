@@ -20,6 +20,8 @@
 neko actbuilder_atlas_parser.n '人物解码目录' '输出目录'
 ```
 
+---
+
 ## Data人物包解码 ActBuilderDataParser
 用于解码幻想纹章2系列的data加密数据，使用方法：
 ```shell
@@ -34,6 +36,8 @@ haxelib install hxcpp
 ```shell
 haxelib run hxcpp actbuilder_parser.cppia '人物数据.data' '输出目录'
 ```
+
+---
 
 ## Data人物包加密 ActBuilderDataEncode
 用于生成幻想纹章2系列的data加密数据，使用方法：
