@@ -14,18 +14,18 @@
 
 5、卡帧、伤害等数据未完成同步，后续可能可以采取比例法，来还原伤害。
 
-## ActBuilderAtlasDataParser
+## 精灵图解码 ActBuilderAtlasDataParser
 用于将data数据精灵图转换成常用的精灵图数据
 ```shell
 neko actbuilder_atlas_parser.n '人物解码目录' '输出目录'
 ```
 
-## ActBuilderDataParser
+## Data人物包解码 ActBuilderDataParser
 用于解码幻想纹章2系列的data加密数据，使用方法：
 ```shell
 neko actbuilder_parser.n '人物数据.data' '输出目录'
 ```
-### 中文解决方案
+##### 中文解决方案
 注意，如果人物包存在中文，上面的方法在MacOS可以正常运行，但在Window上可能会失败，这种情况可使用cppia来解决问题：
 ```shell
 haxelib install hxcpp
@@ -35,7 +35,7 @@ haxelib install hxcpp
 haxelib run hxcpp actbuilder_parser.cppia '人物数据.data' '输出目录'
 ```
 
-## ActBuilderDataEncode
+## Data人物包加密 ActBuilderDataEncode
 用于生成幻想纹章2系列的data加密数据，使用方法：
 ```shell
 neko act_builder_data_encode.n '人物文件夹'
