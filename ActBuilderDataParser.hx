@@ -1,3 +1,4 @@
+import haxe.zip.Reader;
 import haxe.io.Bytes;
 import openfl.utils.ByteArray;
 import haxe.Int64;
@@ -32,7 +33,18 @@ class ActBuilderDataParser {
 		File.copy(rolePath, outPath + "/" + targetZipData);
 		// 解压人物包
 		Sys.setCwd(outPath);
-		Sys.command("unzip " + targetZipData);
+		var zip = new Reader(File.read(targetZipData));
+		var list = zip.read();
+		for (item in list.iterator()) {
+			trace("解压：", item.fileName);
+			if (item.fileName.indexOf("/") != -1) {
+				var dir = item.fileName.substr(0, item.fileName.lastIndexOf("/"));
+				if (!FileSystem.exists(dir))
+					FileSystem.createDirectory(dir);
+			}
+			File.saveBytes(item.fileName, item.data);
+		}
+		// Sys.command("unzip " + targetZipData);
 		// 解码操作
 		decodeProcess(".");
 	}
@@ -71,6 +83,4 @@ class ActBuilderDataParser {
 		var b = ByteArray.fromBytes(newBytes);
 		return b;
 	}
-
-	
 }
