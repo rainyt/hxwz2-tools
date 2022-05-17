@@ -1,3 +1,4 @@
+import haxe.Exception;
 import haxe.zip.Reader;
 import haxe.io.Bytes;
 import openfl.utils.ByteArray;
@@ -20,11 +21,16 @@ class ActBuilderDataParser {
 	public static var outPath:String;
 
 	static function main() {
+		#if cpp
+		rolePath = Sys.args()[1];
+		outPath = Sys.args()[2];
+		#else
 		rolePath = Sys.args()[0];
 		outPath = Sys.args()[1];
+		#end
 		if (rolePath == null || outPath == null)
-			throw "参数错误";
-		trace("解析人物包：", rolePath);
+			throw "args error:" + Sys.args();
+		trace("parser role data:", rolePath);
 		if (FileSystem.exists(outPath + "/role.data")) {
 			Sys.command("rm -rf " + outPath);
 		}
@@ -36,13 +42,21 @@ class ActBuilderDataParser {
 		var zip = new Reader(File.read(targetZipData));
 		var list = zip.read();
 		for (item in list.iterator()) {
-			trace("解压：", item.fileName);
+			trace("unzip:", item.fileName);
 			if (item.fileName.indexOf("/") != -1) {
 				var dir = item.fileName.substr(0, item.fileName.lastIndexOf("/"));
 				if (!FileSystem.exists(dir))
 					FileSystem.createDirectory(dir);
 			}
-			File.saveBytes(item.fileName, item.data);
+			try {
+				if (item.compressed) {
+					var newBytes = Reader.unzip(item);
+					File.saveBytes(item.fileName, newBytes);
+				} else
+					File.saveBytes(item.fileName, item.data);
+			} catch (e:Exception) {
+				trace("Error:", e.message);
+			}
 		}
 		// Sys.command("unzip " + targetZipData);
 		// 解码操作
@@ -62,6 +76,7 @@ class ActBuilderDataParser {
 					case "xml", "data":
 						// 文本XML解码
 						var content = bytes.readUTFBytes(bytes.bytesAvailable);
+						trace("解码后：", content);
 						File.saveContent(path, content);
 					case "mp3", "png":
 						// 图片和音频解析

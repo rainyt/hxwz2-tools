@@ -1,3 +1,9 @@
 --main ActBuilderDataParser
 --neko bin/actbuilder_parser.n
 --library openfl
+
+--next
+
+--main ActBuilderDataParser
+--cppia bin/actbuilder_parser.cppia
+--library openfl
