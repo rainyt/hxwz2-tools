@@ -1,5 +1,6 @@
 package;
 
+import haxe.Exception;
 import haxe.Json;
 import haxe.crypto.Md5;
 import sys.FileSystem;
@@ -192,33 +193,37 @@ class ActBuilderAtlasDataParser {
 	 * @param type mp3音频 sprites精灵图
 	 */
 	private static function wirteLoads(loads:Xml, assetsPath:String, type:String):Void {
-		switch (type) {
-			case "sprites":
-				// 精灵表
-				var atlas = Xml.createElement("sprites");
-				var path = "effect/" + saveTag + "_AB/";
-				if (!FileSystem.exists(outPath + "/" + path))
-					FileSystem.createDirectory(outPath + "/" + path);
-				path += assetsPath;
-				atlas.set("path", path);
-				path = outPath + "/" + path;
-				var saveDir = dirPath + "/effect/" + assetsPath + ".xml";
-				if (!FileSystem.exists(saveDir)) {
-					var xmlContent = Xml.parse(File.getContent(saveDir));
-					File.copy(dirPath + "/effect/" + assetsPath + ".png", path + ".png");
-					xmlContent.firstElement().set("imagePath", path.substr(path.lastIndexOf("/") + 1) + ".png");
-					File.saveContent(path + ".xml", xmlContent.toString());
-				}
-				loads.addChild(atlas);
-			case "mp3":
-				// 音频
-				var sound = Xml.createElement("file");
-				var dir = outPath + "/sound/" + saveTag + "_AB/";
-				if (!FileSystem.exists(dir))
-					FileSystem.createDirectory(dir);
-				File.copy(dirPath + "/sound/" + assetsPath, dir + assetsPath);
-				sound.set("path", StringTools.replace(dir, outPath + "/", "") + assetsPath);
-				loads.addChild(sound);
+		try {
+			switch (type) {
+				case "sprites":
+					// 精灵表
+					var atlas = Xml.createElement("sprites");
+					var path = "effect/" + saveTag + "_AB/";
+					if (!FileSystem.exists(outPath + "/" + path))
+						FileSystem.createDirectory(outPath + "/" + path);
+					path += assetsPath;
+					atlas.set("path", path);
+					path = outPath + "/" + path;
+					var saveDir = dirPath + "/effect/" + assetsPath + ".xml";
+					if (!FileSystem.exists(saveDir)) {
+						var xmlContent = Xml.parse(File.getContent(saveDir));
+						File.copy(dirPath + "/effect/" + assetsPath + ".png", path + ".png");
+						xmlContent.firstElement().set("imagePath", path.substr(path.lastIndexOf("/") + 1) + ".png");
+						File.saveContent(path + ".xml", xmlContent.toString());
+					}
+					loads.addChild(atlas);
+				case "mp3":
+					// 音频
+					var sound = Xml.createElement("file");
+					var dir = outPath + "/sound/" + saveTag + "_AB/";
+					if (!FileSystem.exists(dir))
+						FileSystem.createDirectory(dir);
+					File.copy(dirPath + "/sound/" + assetsPath, dir + assetsPath);
+					sound.set("path", StringTools.replace(dir, outPath + "/", "") + assetsPath);
+					loads.addChild(sound);
+			}
+		} catch (e:Exception) {
+			trace("Skin", assetsPath);
 		}
 	}
 
