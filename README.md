@@ -25,6 +25,15 @@ neko actbuilder_atlas_parser.n '人物解码目录' '输出目录'
 ```shell
 neko actbuilder_parser.n '人物数据.data' '输出目录'
 ```
+### 中文解决方案
+注意，如果人物包存在中文，上面的方法在MacOS可以正常运行，但在Window上可能会失败，这种情况可使用cppia来解决问题：
+```shell
+haxelib install hxcpp
+```
+上面的库安装完毕后，则可以运行：
+```shell
+haxelib run hxcpp actbuilder_parser.cppia '人物数据.data' '输出目录'
+```
 
 ## ActBuilderDataEncode
 用于生成幻想纹章2系列的data加密数据，使用方法：
