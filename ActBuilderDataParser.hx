@@ -1,3 +1,5 @@
+import sys.FileStat;
+import haxe.io.Path;
 import haxe.Exception;
 import haxe.zip.Reader;
 import haxe.io.Bytes;
@@ -61,6 +63,33 @@ class ActBuilderDataParser {
 		// Sys.command("unzip " + targetZipData);
 		// 解码操作
 		decodeProcess(".");
+
+		// 将role.data转换为对应的zyproject文件
+		exportZyproject("role.data", Path.withoutDirectory(rolePath));
+	}
+
+	static function exportZyproject(file:String, name:String):Void {
+		var save = Path.withoutExtension(Path.withoutDirectory(name)) + ".zyproject";
+		File.copy(file, save);
+		FileSystem.deleteFile(file);
+		// 然后这里需要读取zyproject的path参数，然后读取到png和xml
+		var xml:Xml = Xml.parse(File.getContent(save));
+		var path = xml.firstElement().get("path");
+		var pngPath = Path.withoutExtension(Path.withoutDirectory(path)) + ".png";
+		FileSystem.rename("./content.png", pngPath);
+		var atlas:Xml = Xml.createDocument();
+		var root:Xml = Xml.createElement("TextureAtlas");
+		root.set("imagePath", pngPath);
+		atlas.insertChild(root, 0);
+		for (item in xml.firstElement().elements()) {
+			if (item.nodeName == "act") {
+				for (sub in item.elements()) {
+					root.insertChild(sub, 0);
+				}
+			}
+		}
+		File.saveContent(Path.withoutExtension(Path.withoutDirectory(path)) + ".xml", atlas.toString());
+		trace("path=", path);
 	}
 
 	static function decodeProcess(dir:String):Void {
