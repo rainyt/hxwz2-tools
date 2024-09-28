@@ -21,6 +21,7 @@ class ActBuilderDataEncode {
 			var name = path.substr(path.lastIndexOf("/") + 1);
 			name = StringTools.replace(name, "_AB", "");
 			var savePath = path + "/bin/" + name + ".data";
+			// 打开一个压缩实现
 			var out = File.write(savePath);
 			var zip = new Writer(out);
 			var list:List<haxe.zip.Entry> = new List();
