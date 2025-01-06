@@ -118,11 +118,17 @@ class ActBuilderDataParser {
 	public static function decode(path:String):ByteArray {
 		trace("decode", path);
 		var rootBytes = File.getBytes(path);
-		var code:Int64 = Int64.fromFloat(99390298351126);
+		var code:Int = Std.parseInt("99390298351126");
 		var newBytes:Bytes = Bytes.alloc(rootBytes.length);
-		for (i in 0...rootBytes.length) {
-			var i64 = Int64.fromFloat(rootBytes.get(i)) - code;
-			newBytes.setInt64(i, i64);
+		var len = rootBytes.length;
+		var p:Int = 0;
+		for (i in 0...len) {
+			p = i;
+			try {
+				newBytes.set(i, rootBytes.get(i) - code);
+			} catch (e:Exception) {
+				throw e;
+			}
 		}
 		var b = ByteArray.fromBytes(newBytes);
 		return b;
